@@ -169,6 +169,7 @@ const CostEstimationTable = ({
   const RevenueTable = () => (
     <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden mb-16">
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 p-10 text-white">
+        <div className="h-10"></div>
         <h2 className="text-4xl font-bold mb-4 flex items-center gap-4">
           <span className="text-5xl">💰</span>
           Annual Revenue Breakdown
@@ -260,6 +261,7 @@ const CostEstimationTable = ({
               );
             })}
           </tbody>
+          <div className="h-5"></div>
           <tfoot>
             <tr className="bg-gradient-to-r from-gray-800 to-gray-900 text-white">
               <td className="px-10 py-8">
@@ -285,17 +287,22 @@ const CostEstimationTable = ({
                 <div className="text-base opacity-80">final cumulative</div>
               </td>
             </tr>
+            <div className="h-10"></div>
           </tfoot>
         </table>
       </div>
+      
     </div>
   );
 
   // Additional Information Component
   const AdditionalInformation = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+      
       <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl p-10 border border-yellow-200 shadow-2xl">
+         <div className="h-10"></div>
         <h3 className="text-3xl font-bold text-yellow-800 mb-8 flex items-center gap-4">
+         
           <span className="text-4xl">💡</span>
           Key Business Assumptions
         </h3>
@@ -317,6 +324,7 @@ const CostEstimationTable = ({
             </div>
           ))}
         </div>
+         <div className="h-10"></div>
       </div>
 
       <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-10 border border-blue-200 shadow-2xl">
@@ -343,9 +351,10 @@ const CostEstimationTable = ({
   );
 
   return (
-    <div className="fixed inset-0 bg-white z-50 overflow-auto">
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-6">
+    <div className="fixed inset-0 bg-white z-50 overflow-auto ">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 ">
         <div className="max-w-8xl mx-auto">
+           <div className="h-5"></div>
           {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-block bg-gradient-to-r from-green-500 to-emerald-600 text-white px-12 py-8 rounded-3xl shadow-2xl mb-8 transform hover:scale-105 transition-transform duration-300">
@@ -356,17 +365,21 @@ const CostEstimationTable = ({
               Detailed financial analysis for {treeData.units} starting unit{treeData.units > 1 ? 's' : ''} over {treeData.years} years simulation period
             </p>
           </div>
+          <div className="h-5"></div>
 
           <SummaryCards />
+          <div className="h-10"></div>
 
           {/* Enhanced GRAPHS SECTION */}
           <div className="mb-16">
             <div className="bg-white rounded-3xl p-12 shadow-2xl border border-gray-100">
               <div className="pt-16 pb-8">
+                 <div className="h-5"></div>
              <h2 className="text-5xl font-bold text-gray-800 text-center flex items-center justify-center gap-6">
               Performance Analytics & Trends
               </h2>
               </div>
+              <div className="h-5"></div>
 
               
               {/* Enhanced Graph Navigation */}
@@ -397,21 +410,34 @@ const CostEstimationTable = ({
                   </button>
                 ))}
               </div>
+      <div className="h-10"></div>
 
-              {/* Enhanced Graph Display */}
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
-                <div className={`${activeGraph === "nonproducing" ? "xl:col-span-3" : "xl:col-span-2"}`}>
-                  {activeGraph === "revenue" && <RevenueGraph yearlyData={yearlyData} />}
-                  {activeGraph === "milk" && <MilkProductionGraph yearlyData={yearlyData} />}
-                  {activeGraph === "buffaloes" && <BuffaloGrowthGraph yearlyData={yearlyData} />}
-                  {activeGraph === "nonproducing" && <NonProducingBuffaloGraph yearlyData={yearlyData} />}
+             
+
+             
+      {/* Enhanced Graph Display with Side Padding */}
+        <div className="px-6 md:px-12 lg:px-16 xl:px-30">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:gap-16">
+            <div className={activeGraph === "nonproducing" ? "xl:col-span-2" : "xl:col-span-2"}>
+              {activeGraph === "revenue" && <RevenueGraph yearlyData={yearlyData} />}
+              {activeGraph === "milk" && <MilkProductionGraph yearlyData={yearlyData} />}
+              {activeGraph === "buffaloes" && <BuffaloGrowthGraph yearlyData={yearlyData} />}
+              {activeGraph === "nonproducing" && (
+                <div className="xl:col-span-2">
+                  <NonProducingBuffaloGraph yearlyData={yearlyData} />
                 </div>
+              )}
+            </div>
+        </div>
                 
-                {/* Enhanced Quick Stats Card */}
+            
                
+              
               </div>
             </div>
           </div>
+
+          <div className="h-10"></div>
 
           {/* Price in Words */}
           <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl p-12 shadow-2xl mb-16 text-center mt-8">
@@ -422,10 +448,13 @@ const CostEstimationTable = ({
               </div>
             </div>
           </div>
-
+          <div className="h-10"></div>
           <ProductionSchedule />
+           <div className="h-10"></div>
           <RevenueTable />
+           <div className="h-10"></div>
           <AdditionalInformation />
+           <div className="h-10"></div>
 
           {/* Action Buttons */}
           <div className="text-center mb-12">

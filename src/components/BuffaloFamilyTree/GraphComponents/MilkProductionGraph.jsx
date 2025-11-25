@@ -44,6 +44,7 @@ const MilkProductionGraph = ({ yearlyData }) => {
           );
         })}
       </div>
+      <div className="h-10"></div>
     </div>
   );
 };

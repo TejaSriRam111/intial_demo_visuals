@@ -45,6 +45,7 @@ const BuffaloGrowthGraph = ({ yearlyData }) => {
           );
         })}
       </div>
+      <div className="h-10"></div>
     </div>
   );
 };
