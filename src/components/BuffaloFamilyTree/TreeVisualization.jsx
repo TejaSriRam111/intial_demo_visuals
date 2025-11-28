@@ -57,6 +57,11 @@ const TreeVisualization = ({
   const monthNames = ["January", "February", "March", "April", "May", "June", 
                      "July", "August", "September", "October", "November", "December"];
 
+  // Function to get buffalo display name (A1, A2, etc.)
+  const getBuffaloDisplayName = (buffalo) => {
+    return `A${buffalo.id}`;
+  };
+
   return (
     <div className="flex-1 relative overflow-hidden" ref={containerRef}>
       {/* Controls Info */}
@@ -127,7 +132,7 @@ const TreeVisualization = ({
                 >
                   <div className="text-center mb-8">
                     <h2 className="text-xl font-bold text-gray-800 mb-2">
-                      Unit {founder.unit} - Founder B{founder.id}
+                      Unit {founder.unit} - {getBuffaloDisplayName(founder)}
                     </h2>
                     <div className="text-sm text-gray-600 mb-2">
                       Started: {monthNames[treeData.startMonth]} {treeData.startYear}
@@ -136,8 +141,16 @@ const TreeVisualization = ({
                   </div>
 
                   <div className="flex flex-col items-center">
-                    <BuffaloNode data={founder} founder />
-                    <TreeBranch parent={founder} all={treeData.buffaloes} />
+                    <BuffaloNode 
+                      data={founder} 
+                      founder 
+                      displayName={getBuffaloDisplayName(founder)}
+                    />
+                    <TreeBranch 
+                      parent={founder} 
+                      all={treeData.buffaloes} 
+                      getDisplayName={getBuffaloDisplayName}
+                    />
                   </div>
                 </div>
               ))}
@@ -147,5 +160,6 @@ const TreeVisualization = ({
     </div>
   );
 };
+
 
 export default TreeVisualization;

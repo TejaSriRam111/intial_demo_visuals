@@ -8,6 +8,8 @@ const HeaderControls = ({
   setYears,
   startYear,
   setStartYear,
+  startMonth,
+  setStartMonth,
   runSimulation,
   treeData,
   resetSimulation,
@@ -17,6 +19,9 @@ const HeaderControls = ({
   handleResetView,
   zoom
 }) => {
+  const monthNames = ["January", "February", "March", "April", "May", "June", 
+                     "July", "August", "September", "October", "November", "December"];
+
   return (
     <div className="bg-white/90 backdrop-blur-sm shadow-lg p-6 border-b border-gray-200 flex-shrink-0">
       <div className="max-w-8xl mx-auto">
@@ -45,7 +50,7 @@ const HeaderControls = ({
           )}
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
           <div>
             <label className="text-base font-semibold text-gray-700 mb-3 block">
               Starting Units
@@ -84,6 +89,22 @@ const HeaderControls = ({
               value={startYear}
               onChange={(e) => setStartYear(Number(e.target.value))}
             />
+          </div>
+          <div>
+            <label className="text-base font-semibold text-gray-700 mb-3 block">
+              Start Month
+            </label>
+            <select
+              className="w-full border border-gray-300 p-4 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg h-14"
+              value={startMonth}
+              onChange={(e) => setStartMonth(Number(e.target.value))}
+            >
+              {monthNames.map((month, index) => (
+                <option key={index} value={index}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex items-end">
             <button

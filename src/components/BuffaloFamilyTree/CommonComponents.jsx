@@ -30,8 +30,8 @@ export const buildTree = (root, all) => {
   return all.filter((b) => b.parentId === root.id);
 };
 
-// Buffalo Node Component
-export const BuffaloNode = ({ data, founder }) => (
+// Buffalo Node Component - Updated to accept displayName prop
+export const BuffaloNode = ({ data, founder, displayName }) => (
   <div className="flex flex-col items-center group relative">
     <div
       className={`${
@@ -39,7 +39,7 @@ export const BuffaloNode = ({ data, founder }) => (
       } rounded-full w-16 h-16 flex flex-col justify-center items-center text-white shadow-lg transform transition-all duration-200 hover:scale-110 border-2 border-white`}
     >
       <div className="text-sm font-bold">
-        {founder ? `B${data.id}` : data.birthYear}
+        {founder ? displayName : data.birthYear}
       </div>
       <div className="text-[9px] opacity-90 bg-black bg-opacity-20 px-1 rounded">
         Gen {data.generation}
@@ -52,14 +52,14 @@ export const BuffaloNode = ({ data, founder }) => (
       </div>
       {!founder && (
         <div className="text-[9px] text-gray-500 mt-0.5">
-          Parent: B{data.parentId}
+          Parent: {displayName}
         </div>
       )}
     </div>
   </div>
 );
 
-// Curved Arrow Component
+// Curved Arrow Component (unchanged)
 export const CurvedArrow = ({ flip, hasSiblings, index }) => {
   const strokeColor = "#4F46E5";
   const strokeWidth = 2;
@@ -107,8 +107,8 @@ export const CurvedArrow = ({ flip, hasSiblings, index }) => {
   );
 };
 
-// Tree Branch Component
-export const TreeBranch = ({ parent, all, level = 0 }) => {
+// Tree Branch Component - Updated to pass getDisplayName
+export const TreeBranch = ({ parent, all, level = 0, getDisplayName }) => {
   const kids = buildTree(parent, all);
   if (kids.length === 0) return null;
 
@@ -118,9 +118,9 @@ export const TreeBranch = ({ parent, all, level = 0 }) => {
         <div className="flex flex-col items-center">
           <CurvedArrow flip={false} hasSiblings={false} />
           <div className="mt-1">
-            <BuffaloNode data={kids[0]} />
+            <BuffaloNode data={kids[0]} displayName={getDisplayName(kids[0])} />
           </div>
-          <TreeBranch parent={kids[0]} all={all} level={level + 1} />
+          <TreeBranch parent={kids[0]} all={all} level={level + 1} getDisplayName={getDisplayName} />
         </div>
       ) : (
         <div className="flex flex-col items-center">
@@ -136,9 +136,9 @@ export const TreeBranch = ({ parent, all, level = 0 }) => {
                   index={i}
                 />
                 <div className="mt-1">
-                  <BuffaloNode data={child} />
+                  <BuffaloNode data={child} displayName={getDisplayName(child)} />
                 </div>
-                <TreeBranch parent={child} all={all} level={level + 1} />
+                <TreeBranch parent={child} all={all} level={level + 1} getDisplayName={getDisplayName} />
               </div>
             ))}
           </div>
