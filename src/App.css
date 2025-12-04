@@ -2,3 +2,8 @@
   width: 100%;
   
 }
+
+#root {
+  margin: 0;
+  padding: 0;
+}
