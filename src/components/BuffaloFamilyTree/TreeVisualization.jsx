@@ -62,32 +62,27 @@ const TreeVisualization = ({
   };
 
   return (
-    <div className="flex-1 relative overflow-hidden" ref={containerRef}>
+    <div 
+      className="flex-1 relative overflow-auto" 
+      ref={containerRef}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      style={{
+        cursor: isDragging ? 'grabbing' : 'auto'
+      }}
+    >
       {/* Controls Info */}
       <div className="absolute top-6 left-6 z-10 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-xl border border-gray-200">
         <div className="flex items-center gap-3 text-sm text-gray-600 mb-2">
           <Move size={16} />
-          <span>Drag to pan</span>
+          <span>Drag to pan | Scroll to zoom</span>
         </div>
-        <div className="text-sm text-gray-600">Scroll or use buttons to zoom</div>
+        <div className="text-sm text-gray-600">Use buttons to reset zoom</div>
       </div>
 
       {/* Summary Cards */}
       <div className="absolute top-6 right-6 z-10 flex gap-4">
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 min-w-[140px]">
-          <div className="text-xl font-bold text-blue-600">{treeData.units}</div>
-          <div className="text-sm text-gray-600">Starting Units</div>
-        </div>
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 min-w-[140px]">
-          <div className="text-xl font-bold text-green-600">{treeData.years}</div>
-          <div className="text-sm text-gray-600">Simulation Years</div>
-        </div>
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-5 shadow-xl border border-gray-200 min-w-[160px]">
-          <div className="text-xl font-bold text-purple-600">
-            {monthNames[treeData.startMonth]} {treeData.startDay}, {treeData.startYear}
-          </div>
-          <div className="text-sm text-gray-600">Starting Date</div>
-        </div>
         <div className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl p-5 shadow-xl text-white min-w-[160px]">
           <div className="text-2xl font-bold">{treeData.totalBuffaloes}</div>
           <div className="text-sm opacity-90">Total Buffaloes</div>
@@ -105,55 +100,48 @@ const TreeVisualization = ({
       {/* Tree Visualization Container */}
       <div 
         ref={treeContainerRef}
-        className={`w-full h-full overflow-auto ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
+        className="w-full h-full p-10"
         style={{
-          cursor: isDragging ? 'grabbing' : 'grab'
+          transform: `scale(${zoom}) translate(${position.x}px, ${position.y}px)`,
+          transition: isDragging ? 'none' : 'transform 0.1s ease',
+          minWidth: `${100 * zoom}%`,
+          minHeight: `${100 * zoom}%`,
+          transformOrigin: '0 0'
         }}
       >
-        <div 
-          className="min-w-full min-h-full flex items-start justify-center p-10"
-          style={{
-            transform: `scale(${zoom}) translate(${position.x}px, ${position.y}px)`,
-            transition: isDragging ? 'none' : 'transform 0.1s ease'
-          }}
-        >
-          <div className="flex flex-wrap gap-10 justify-center">
-            {treeData.buffaloes
-              .filter((b) => b.parentId === null)
-              .map((founder) => (
-                <div
-                  key={founder.id}
-                  className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl border border-gray-200 flex-shrink-0"
-                >
-                  <div className="text-center mb-8">
-                    <h2 className="text-xl font-bold text-gray-800 mb-2">
-                      Unit {founder.unit} - {getBuffaloDisplayName(founder)}
-                    </h2>
-                    <div className="text-sm text-gray-600 mb-2">
-                      Started: {monthNames[treeData.startMonth]} {treeData.startDay}, {treeData.startYear}
-                    </div>
-                    <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
+        <div className="flex flex-wrap gap-10 justify-center">
+          {treeData.buffaloes
+            .filter((b) => b.parentId === null)
+            .map((founder) => (
+              <div
+                key={founder.id}
+                className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl border border-gray-200 flex-shrink-0"
+              >
+                <div className="text-center mb-8">
+                  <h2 className="text-xl font-bold text-gray-800 mb-2">
+                    Unit {founder.unit} - {getBuffaloDisplayName(founder)}
+                  </h2>
+                  <div className="text-sm text-gray-600 mb-2">
+                    Started: {monthNames[treeData.startMonth]} {treeData.startDay}, {treeData.startYear}
                   </div>
-
-                  <div className="flex flex-col items-center">
-                    <BuffaloNode 
-                      data={founder} 
-                      founder 
-                      displayName={getBuffaloDisplayName(founder)}
-                      elementId={`buffalo-${founder.id}`}
-                    />
-                    <TreeBranch 
-                      parent={founder} 
-                      all={treeData.buffaloes} 
-                      getDisplayName={getBuffaloDisplayName}
-                    />
-                  </div>
+                  <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto rounded-full"></div>
                 </div>
-              ))}
-          </div>
+
+                <div className="flex flex-col items-center">
+                  <BuffaloNode 
+                    data={founder} 
+                    founder 
+                    displayName={getBuffaloDisplayName(founder)}
+                    elementId={`buffalo-${founder.id}`}
+                  />
+                  <TreeBranch 
+                    parent={founder} 
+                    all={treeData.buffaloes} 
+                    getDisplayName={getBuffaloDisplayName}
+                  />
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </div>
