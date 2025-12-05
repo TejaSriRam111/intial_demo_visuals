@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import HeaderControls from './HeaderControls';
 import TreeVisualization from './TreeVisualization';
-import CostEstimationTable from './CostEstimationTable';
+
 import { formatCurrency, formatNumber } from './CommonComponents';
+import CostEstimationTable from "../CostEstimation/CostEstimationTable";
 
 export default function BuffaloFamilyTree() {
   const [units, setUnits] = useState(1);
