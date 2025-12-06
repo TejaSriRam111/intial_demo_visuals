@@ -7,7 +7,6 @@ const AnnualHerdRevenue = ({
   setCpfToggle,
   formatCurrency,
   formatNumber,
-  formatNumber,
   treeData,
   startYear,
   endYear,

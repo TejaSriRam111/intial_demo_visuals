@@ -697,6 +697,11 @@ const CostEstimationTable = ({
     return Object.values(cumulativeRevenue).reduce((sum, revenue) => sum + revenue, 0);
   };
 
+  // Calculate dynamic year ranges
+  const startYear = treeData.startYear;
+  const endYear = startYear + treeData.years - 1;
+  const yearRange = `${startYear}-${endYear}`;
+
   const herdStats = {
     startingBuffaloes: initialInvestment.totalBuffaloesAtStart,
     motherBuffaloes: initialInvestment.motherBuffaloes,
