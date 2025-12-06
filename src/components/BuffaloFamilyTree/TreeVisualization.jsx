@@ -1,5 +1,5 @@
 import React from 'react';
-import { Move } from "lucide-react";
+import { Move, Maximize, Minimize, Scan } from "lucide-react";
 import { BuffaloNode, TreeBranch } from './CommonComponents';
 
 const TreeVisualization = ({
@@ -12,6 +12,9 @@ const TreeVisualization = ({
   handleMouseUp,
   containerRef,
   treeContainerRef,
+  isFullScreen,
+  toggleFullScreen,
+  handleFitToScreen, // New prop
 }) => {
   if (!treeData) {
     return (
@@ -22,7 +25,7 @@ const TreeVisualization = ({
             Buffalo Family Tree Simulator
           </h2>
           <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-            Simulate the growth of your buffalo herd over time. Watch as your founding buffalos 
+            Simulate the growth of your buffalo herd over time. Watch as your founding buffalos
             create generations of offspring in this interactive family tree visualization.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
@@ -53,8 +56,8 @@ const TreeVisualization = ({
     );
   }
 
-  const monthNames = ["January", "February", "March", "April", "May", "June", 
-                     "July", "August", "September", "October", "November", "December"];
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
 
   // Function to get buffalo display name (A1, A2, etc.)
   const getBuffaloDisplayName = (buffalo) => {
@@ -62,8 +65,8 @@ const TreeVisualization = ({
   };
 
   return (
-    <div 
-      className="flex-1 relative overflow-auto" 
+    <div
+      className="flex-1 relative overflow-auto"
       ref={containerRef}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -78,7 +81,36 @@ const TreeVisualization = ({
           <Move size={16} />
           <span>Drag to pan | Scroll to zoom</span>
         </div>
-        <div className="text-sm text-gray-600">Use buttons to reset zoom</div>
+        <div className="text-sm text-gray-600 mb-3">Use buttons to reset zoom</div>
+
+        {/* Helper Buttons Grid */}
+        <div className="grid grid-cols-2 gap-2 w-full">
+          <button
+            onClick={handleFitToScreen}
+            className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors justify-center"
+            title="Fit to Screen"
+          >
+            <Scan size={14} />
+            <span>Fit View</span>
+          </button>
+          <button
+            onClick={toggleFullScreen}
+            className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors justify-center"
+            title={isFullScreen ? "Exit Full Screen" : "Full Screen"}
+          >
+            {isFullScreen ? (
+              <>
+                <Minimize size={14} />
+                <span>Exit</span>
+              </>
+            ) : (
+              <>
+                <Maximize size={14} />
+                <span>Expand</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Summary Cards */}
@@ -87,7 +119,7 @@ const TreeVisualization = ({
           <div className="text-2xl font-bold">{treeData.totalBuffaloes}</div>
           <div className="text-sm opacity-90">Total Buffaloes</div>
         </div>
-        
+
         {/* Revenue Display */}
         {treeData.revenueData && (
           <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl p-5 shadow-xl text-white min-w-[160px]">
@@ -98,7 +130,7 @@ const TreeVisualization = ({
       </div>
 
       {/* Tree Visualization Container */}
-      <div 
+      <div
         ref={treeContainerRef}
         className="w-full h-full p-10"
         style={{
@@ -109,6 +141,7 @@ const TreeVisualization = ({
           transformOrigin: '0 0'
         }}
       >
+        {/* flex-nowrap to prevent wrapping, min-w-max to ensure full width */}
         <div className="flex flex-wrap gap-10 justify-center">
           {treeData.buffaloes
             .filter((b) => b.parentId === null)
@@ -128,15 +161,15 @@ const TreeVisualization = ({
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <BuffaloNode 
-                    data={founder} 
-                    founder 
+                  <BuffaloNode
+                    data={founder}
+                    founder
                     displayName={getBuffaloDisplayName(founder)}
                     elementId={`buffalo-${founder.id}`}
                   />
-                  <TreeBranch 
-                    parent={founder} 
-                    all={treeData.buffaloes} 
+                  <TreeBranch
+                    parent={founder}
+                    all={treeData.buffaloes}
                     getDisplayName={getBuffaloDisplayName}
                   />
                 </div>
