@@ -9,10 +9,13 @@ const AssetMarketValue = ({
   calculateDetailedAssetValue,
   assetMarketValue,
   formatCurrency,
-  isAssetMarketValue = false
+  isAssetMarketValue = false,
+  startYear,
+  endYear,
+  yearRange
 }) => {
   const [selectedYear, setSelectedYear] = useState(treeData.startYear + treeData.years);
-  
+
   if (isAssetMarketValue) {
     // This is the Asset Market Value component
     const selectedAssetValue = assetMarketValue.find(a => a.year === selectedYear) || assetMarketValue[0];
@@ -21,7 +24,7 @@ const AssetMarketValue = ({
       <div className="bg-gradient-to-br from-orange-50 to-red-100 rounded-3xl p-10 shadow-2xl border border-orange-200 mb-16">
         <h2 className="text-4xl font-bold text-orange-800 mb-10 text-center flex items-center justify-center gap-4">
           <span className="text-5xl">🏦</span>
-          Asset Market Value Analysis (2026-2035)
+          Asset Market Value Analysis ({yearRange})
         </h2>
 
         {/* Year Selection and Summary */}
@@ -85,10 +88,10 @@ const AssetMarketValue = ({
                 ].map((item, index) => {
                   const count = selectedAssetValue?.ageCategories?.[item.category]?.count || 0;
                   const value = selectedAssetValue?.ageCategories?.[item.category]?.value || 0;
-                  const percentage = selectedAssetValue?.totalAssetValue > 0 
-                    ? (value / selectedAssetValue.totalAssetValue * 100).toFixed(1) 
+                  const percentage = selectedAssetValue?.totalAssetValue > 0
+                    ? (value / selectedAssetValue.totalAssetValue * 100).toFixed(1)
                     : 0;
-                  
+
                   return (
                     <tr key={index} className="hover:bg-orange-50 transition-colors">
                       <td className="px-6 py-4 border-b">
@@ -139,7 +142,7 @@ const AssetMarketValue = ({
             <div className="text-3xl font-bold text-blue-600 mb-4">
               {formatCurrency(assetMarketValue[0]?.totalAssetValue || 0)}
             </div>
-            <div className="text-lg font-semibold text-blue-700">Initial Asset Value (2026)</div>
+            <div className="text-lg font-semibold text-blue-700">Initial Asset Value ({startYear})</div>
             <div className="text-sm text-gray-600 mt-2">
               {assetMarketValue[0]?.totalBuffaloes || 0} buffaloes
               <br />
@@ -153,7 +156,7 @@ const AssetMarketValue = ({
             <div className="text-3xl font-bold mb-4">
               {formatCurrency(assetMarketValue[assetMarketValue.length - 1]?.totalAssetValue || 0)}
             </div>
-            <div className="text-lg font-semibold opacity-90">Final Asset Value (2035)</div>
+            <div className="text-lg font-semibold opacity-90">Final Asset Value ({endYear})</div>
             <div className="text-sm opacity-80 mt-2">
               {assetMarketValue[assetMarketValue.length - 1]?.totalBuffaloes || 0} buffaloes
               <br />
@@ -177,9 +180,9 @@ const AssetMarketValue = ({
           </div>
         </div>
 
-        {/* Yearly Asset Value Table (2026-2035) */}
+        {/* Yearly Asset Value Table ({yearRange}) */}
         <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-lg">
-          <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Yearly Asset Market Value (2026-2035)</h3>
+          <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Yearly Asset Market Value ({yearRange})</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
