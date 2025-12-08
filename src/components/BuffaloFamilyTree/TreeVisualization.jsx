@@ -16,35 +16,32 @@ const TreeVisualization = ({
   if (!treeData) {
     return (
       <div className="flex-1 flex items-center justify-center p-10">
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-14 shadow-2xl border border-gray-200 text-center max-w-4xl">
-          <div className="text-7xl mb-8">🐃</div>
-          <h2 className="text-4xl font-bold text-gray-800 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-4 shadow-2xl border border-gray-200 text-center max-w-4xl">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2 xl:">
             Buffalo Family Tree Simulator
           </h2>
-          <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-            Simulate the growth of your buffalo herd over time. Watch as your founding buffalos 
+          <p className="text-[0.9rem] text-gray-600  leading-relaxed">
+            Simulate the growth of your buffalo herd over time. Watch as your founding buffalos
             create generations of offspring in this interactive family tree visualization.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-            <div className="text-center p-6">
-              <div className="text-4xl mb-4">📊</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4">
+            <div className="text-center p-3">
               <h3 className="font-bold text-xl mb-3">Configure</h3>
-              <p className="text-base text-gray-600">Set your starting units and simulation period</p>
+              <p className="text-sm text-gray-600">Set your starting units and simulation period</p>
             </div>
-            <div className="text-center p-6">
-              <div className="text-4xl mb-4">⚡</div>
+            <div className="text-center p-3">
+
               <h3 className="font-bold text-xl mb-3">Simulate</h3>
-              <p className="text-base text-gray-600">Run the simulation to generate your herd</p>
+              <p className="text-sm text-gray-600">Run the simulation to generate your herd</p>
             </div>
-            <div className="text-center p-6">
-              <div className="text-4xl mb-4">🌳</div>
+            <div className="text-center p-3">
               <h3 className="font-bold text-xl mb-3">Explore</h3>
-              <p className="text-base text-gray-600">Navigate through the interactive family tree</p>
+              <p className="text-sm text-gray-600">Navigate through the interactive family tree</p>
             </div>
           </div>
           <button
             onClick={() => window.location.reload()}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-12 py-6 rounded-2xl font-bold text-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-2xl inline-flex items-center gap-3"
+            className="bg-gray-500 text-white px-4 py-2 rounded-2xl font-bold text-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-2xl inline-flex items-center gap-3"
           >
             Start Your First Simulation
           </button>
@@ -53,8 +50,8 @@ const TreeVisualization = ({
     );
   }
 
-  const monthNames = ["January", "February", "March", "April", "May", "June", 
-                     "July", "August", "September", "October", "November", "December"];
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
 
   // Function to get buffalo display name (A1, A2, etc.)
   const getBuffaloDisplayName = (buffalo) => {
@@ -62,8 +59,8 @@ const TreeVisualization = ({
   };
 
   return (
-    <div 
-      className="flex-1 relative overflow-auto" 
+    <div
+      className="flex-1 relative overflow-auto"
       ref={containerRef}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -87,7 +84,7 @@ const TreeVisualization = ({
           <div className="text-2xl font-bold">{treeData.totalBuffaloes}</div>
           <div className="text-sm opacity-90">Total Buffaloes</div>
         </div>
-        
+
         {/* Revenue Display */}
         {treeData.revenueData && (
           <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl p-5 shadow-xl text-white min-w-[160px]">
@@ -98,7 +95,7 @@ const TreeVisualization = ({
       </div>
 
       {/* Tree Visualization Container */}
-      <div 
+      <div
         ref={treeContainerRef}
         className="w-full h-full p-10"
         style={{
@@ -128,15 +125,15 @@ const TreeVisualization = ({
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <BuffaloNode 
-                    data={founder} 
-                    founder 
+                  <BuffaloNode
+                    data={founder}
+                    founder
                     displayName={getBuffaloDisplayName(founder)}
                     elementId={`buffalo-${founder.id}`}
                   />
-                  <TreeBranch 
-                    parent={founder} 
-                    all={treeData.buffaloes} 
+                  <TreeBranch
+                    parent={founder}
+                    all={treeData.buffaloes}
                     getDisplayName={getBuffaloDisplayName}
                   />
                 </div>

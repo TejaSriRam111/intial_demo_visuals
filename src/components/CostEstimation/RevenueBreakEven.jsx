@@ -13,149 +13,119 @@ const RevenueBreakEven = ({
     "July", "August", "September", "October", "November", "December"];
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-indigo-100 rounded-3xl p-10 shadow-2xl border border-purple-200 mb-16">
-      <h2 className="text-4xl font-bold text-purple-800 mb-10 text-center flex items-center justify-center gap-4">
-        <span className="text-5xl">💰</span>
-        Revenue Break-Even Analysis (With & Without CPF)
-      </h2>
+    <div className=" p-10 rounded-2xl border border-purple-200 mb-16 xl:mx-20">
 
-      {/* CPF Toggle */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-white rounded-2xl p-4 border border-purple-300">
-          <div className="text-lg font-semibold text-purple-700 mb-2 text-center">Select CPF Mode:</div>
-          <div className="flex gap-4">
-            <button
-              onClick={() => setCpfToggle("withCPF")}
-              className={`px-6 py-3 rounded-xl font-bold transition-all ${cpfToggle === "withCPF" ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-            >
-              With CPF
-            </button>
-            <button
-              onClick={() => setCpfToggle("withoutCPF")}
-              className={`px-6 py-3 rounded-xl font-bold transition-all ${cpfToggle === "withoutCPF" ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-            >
-              Without CPF
-            </button>
-          </div>
-        </div>
-      </div>
 
-      {/* Initial Investment Breakdown */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-        <div className="bg-white rounded-2xl p-8 border border-blue-200 shadow-lg text-center">
-          <div className="text-3xl font-bold text-blue-600 mb-4">
+     {/* CPF Toggle - Side-by-side version */}
+<div className="flex justify-center mb-8">
+  <div className="bg-white rounded-2xl p-4 border border-purple-300 flex items-center gap-4">
+    <div className="text-lg font-semibold text-purple-700">Select CPF Mode:</div>
+    <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
+      <button
+        onClick={() => setCpfToggle("withCPF")}
+        className={`px-6 py-2 rounded-lg font-bold transition-all ${cpfToggle === "withCPF" ? 'bg-green-500 text-white shadow-md' : 'bg-transparent text-gray-700 hover:bg-gray-200'}`}
+      >
+        With CPF
+      </button>
+      <button
+        onClick={() => setCpfToggle("withoutCPF")}
+        className={`px-6 py-2 rounded-lg font-bold transition-all ${cpfToggle === "withoutCPF" ? 'bg-blue-500 text-white shadow-md' : 'bg-transparent text-gray-700 hover:bg-gray-200'}`}
+      >
+        Without CPF
+      </button>
+    </div>
+  </div>
+</div>
+
+      {/* Initial Investment & Break-Even Analysis - Professional Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+        {/* Mother Buffaloes Cost */}
+        <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-5 border border-blue-100 shadow-sm text-center">
+          <div className="text-2xl font-bold text-blue-700 mb-2">
             {formatCurrency(initialInvestment.motherBuffaloCost)}
           </div>
-          <div className="text-lg font-semibold text-blue-700">Mother Buffaloes (60 months old)</div>
-          <div className="text-sm text-gray-600 mt-2">
+          <div className="text-md font-semibold text-blue-800 mb-1">Mother Buffaloes</div>
+          <div className="text-xs text-gray-600">
             {treeData.units} units × 2 mothers × ₹1.75 Lakhs
             <br />
-            {initialInvestment.motherBuffaloes} mother buffaloes @ ₹1.75 Lakhs each
+            {initialInvestment.motherBuffaloes} mother buffaloes @ ₹1.75L each
             <br />
             Total: 2 × ₹1.75L = ₹3.5L per unit
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-8 border border-green-200 shadow-lg text-center">
-          <div className="text-3xl font-bold text-green-600 mb-4">
+        {/* CPF Cost */}
+        <div className="bg-gradient-to-br from-emerald-50 to-white rounded-xl p-5 border border-emerald-100 shadow-sm text-center">
+          <div className="text-2xl font-bold text-emerald-700 mb-2">
             {formatCurrency(initialInvestment.cpfCost)}
           </div>
-          <div className="text-lg font-semibold text-green-700">CPF Cost (One CPF per Unit)</div>
-          <div className="text-sm text-gray-600 mt-2">
+          <div className="text-md font-semibold text-emerald-800 mb-1">CPF Coverage</div>
+          <div className="text-xs text-gray-600">
             {treeData.units} units × ₹13,000
             <br />
-            One CPF covers both M1 and M2 in each unit
+            One CPF covers both M1 and M2 per unit
             <br />
-            M1 has CPF, M2 gets free CPF coverage
+            M1 has CPF, M2 gets free coverage
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl p-8 text-white shadow-lg text-center">
-          <div className="text-3xl font-bold mb-4">
-            {formatCurrency(initialInvestment.totalInvestment)}
-          </div>
-          <div className="text-lg font-semibold opacity-90">Total Initial Investment</div>
-          <div className="text-sm opacity-80 mt-2">
-            Includes {initialInvestment.totalBuffaloesAtStart} buffaloes (2 mothers + 2 calves per unit)
-            <br />
-            Plus one CPF coverage for each unit
+        {/* Total Investment Card - Added in the middle */}
+        <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl p-5 text-white shadow-lg text-center transform hover:scale-[1.02] transition-transform duration-200">
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="text-xs font-semibold opacity-90 mb-1">Total Initial Investment</div>
+            <div className="text-2xl md:text-3xl font-bold mb-2">
+              {formatCurrency(initialInvestment.totalInvestment)}
+            </div>
+            <div className="text-xs opacity-80">
+              {initialInvestment.totalBuffaloesAtStart} buffaloes total
+              <br />
+              (2 mothers + 2 calves per unit)
+              <br />
+              + CPF coverage for each unit
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Starting Buffalo Summary */}
-      <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-8 text-white text-center shadow-2xl mb-8">
-        <div className="text-2xl font-bold mb-4">Starting Buffaloes (Included in Initial Purchase)</div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm">
-            <div className="text-3xl font-bold">{initialInvestment.motherBuffaloes}</div>
-            <div className="text-lg font-semibold">Mother Buffaloes (60 months)</div>
-            <div className="text-sm opacity-90">5th year @ ₹1.75 Lakhs each</div>
-          </div>
-          <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm">
-            <div className="text-3xl font-bold">{initialInvestment.calvesAtStart}</div>
-            <div className="text-lg font-semibold">Newborn Calves</div>
-            <div className="text-sm opacity-90">Included free with mothers</div>
-          </div>
-          <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm">
-            <div className="text-3xl font-bold">{treeData.units}</div>
-            <div className="text-lg font-semibold">CPF Coverage</div>
-            <div className="text-sm opacity-90">One CPF per unit (covers M1 & M2)</div>
-          </div>
-        </div>
-      </div>
-
-      {/* CPF Offer Explanation */}
-      <div className="bg-gradient-to-r from-yellow-500 to-orange-600 rounded-2xl p-6 text-white text-center shadow-2xl mb-8">
-        <div className="text-2xl font-bold mb-4">🎁 Special CPF Offer</div>
-        <div className="text-lg opacity-90">
-          For each unit (2 mother buffaloes), you get ONE CPF coverage (₹13,000) that covers both M1 and M2
-        </div>
-        <div className="text-sm opacity-80 mt-2">
-          Regular price: 2 CPF × ₹13,000 = ₹26,000 | Our offer: ₹13,000 (Save ₹13,000!)
-        </div>
-      </div>
-
-      {/* Break-Even Results - Show Both */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         {/* Without CPF Break-Even */}
         {breakEvenAnalysis.breakEvenYearWithoutCPF && breakEvenAnalysis.exactBreakEvenDateWithoutCPF && (
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-8 text-white text-center shadow-2xl">
-            <div className="text-3xl font-bold mb-4">📊 Break-Even WITHOUT CPF</div>
-            <div className="text-2xl font-semibold mb-2">
-              {breakEvenAnalysis.exactBreakEvenDateWithoutCPF.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+          <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl p-5 text-white text-center shadow-sm">
+            <div className="text-md font-bold mb-2">Break-Even WITHOUT CPF</div>
+            <div className="text-xl font-semibold mb-1">
+              {breakEvenAnalysis.exactBreakEvenDateWithoutCPF.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
               })}
             </div>
-            <div className="text-lg opacity-90 mb-4">
-              📈 Cumulative Revenue: {formatCurrency(breakEvenAnalysis.finalCumulativeRevenueWithoutCPF)}
+            <div className="text-sm opacity-90 mb-2">
+              📈 Revenue: {formatCurrency(breakEvenAnalysis.finalCumulativeRevenueWithoutCPF)}
             </div>
-            <div className="text-sm opacity-80">
-              Investment recovered in {Math.floor((breakEvenAnalysis.breakEvenYearWithoutCPF - treeData.startYear) * 12 + breakEvenAnalysis.breakEvenMonthWithoutCPF)} months 
-              ({Math.floor((breakEvenAnalysis.breakEvenYearWithoutCPF - treeData.startYear) + breakEvenAnalysis.breakEvenMonthWithoutCPF/12)} years {breakEvenAnalysis.breakEvenMonthWithoutCPF%12} months)
+            <div className="text-xs opacity-80">
+              {Math.floor((breakEvenAnalysis.breakEvenYearWithoutCPF - treeData.startYear) * 12 + breakEvenAnalysis.breakEvenMonthWithoutCPF)} months
+              <br />
+              ({Math.floor((breakEvenAnalysis.breakEvenYearWithoutCPF - treeData.startYear) + breakEvenAnalysis.breakEvenMonthWithoutCPF / 12)} years)
             </div>
           </div>
         )}
 
         {/* With CPF Break-Even */}
         {breakEvenAnalysis.breakEvenYearWithCPF && breakEvenAnalysis.exactBreakEvenDateWithCPF && (
-          <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 text-white text-center shadow-2xl">
-            <div className="text-3xl font-bold mb-4">🎉 Break-Even WITH CPF</div>
-            <div className="text-2xl font-semibold mb-2">
-              {breakEvenAnalysis.exactBreakEvenDateWithCPF.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+          <div className="bg-gradient-to-br from-teal-600 to-emerald-700 rounded-xl p-5 text-white text-center shadow-sm">
+            <div className="text-md font-bold mb-2">Break-Even WITH CPF</div>
+            <div className="text-xl font-semibold mb-1">
+              {breakEvenAnalysis.exactBreakEvenDateWithCPF.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
               })}
             </div>
-            <div className="text-lg opacity-90 mb-4">
-              📈 Net Cumulative Revenue: {formatCurrency(breakEvenAnalysis.finalCumulativeRevenueWithCPF)}
+            <div className="text-sm opacity-90 mb-2">
+              📈 Net Revenue: {formatCurrency(breakEvenAnalysis.finalCumulativeRevenueWithCPF)}
             </div>
-            <div className="text-sm opacity-80">
-              Investment recovered in {Math.floor((breakEvenAnalysis.breakEvenYearWithCPF - treeData.startYear) * 12 + breakEvenAnalysis.breakEvenMonthWithCPF)} months 
-              ({Math.floor((breakEvenAnalysis.breakEvenYearWithCPF - treeData.startYear) + breakEvenAnalysis.breakEvenMonthWithCPF/12)} years {breakEvenAnalysis.breakEvenMonthWithCPF%12} months)
+            <div className="text-xs opacity-80">
+              {Math.floor((breakEvenAnalysis.breakEvenYearWithCPF - treeData.startYear) * 12 + breakEvenAnalysis.breakEvenMonthWithCPF)} months
+              <br />
+              ({Math.floor((breakEvenAnalysis.breakEvenYearWithCPF - treeData.startYear) + breakEvenAnalysis.breakEvenMonthWithCPF / 12)} years)
             </div>
           </div>
         )}
@@ -219,8 +189,8 @@ const RevenueBreakEven = ({
                       <span className={`px-3 py-1 rounded-full text-sm font-semibold mt-2 inline-block
                         ${status.includes('Break-Even') ? 'bg-green-100 text-green-800' :
                           status.includes('75%') ? 'bg-yellow-100 text-yellow-800' :
-                          status.includes('50%') ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-600'}`}>
+                            status.includes('50%') ? 'bg-blue-100 text-blue-800' :
+                              'bg-gray-100 text-gray-600'}`}>
                         {status}
                       </span>
                     </td>
@@ -232,41 +202,7 @@ const RevenueBreakEven = ({
         </div>
       </div>
 
-      {/* Dynamic Revenue Note */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-200 mt-8">
-        <div className="flex items-start gap-4">
-          <div className="text-3xl">📊</div>
-          <div>
-            <h4 className="text-xl font-bold text-blue-800 mb-2">Dynamic Revenue Calculation</h4>
-            <p className="text-blue-700">
-              All revenue values are calculated <span className="font-semibold">dynamically</span> based on:
-            </p>
-            <ul className="list-disc pl-5 text-blue-600 mt-2 space-y-1">
-              <li>Actual herd growth through natural reproduction</li>
-              <li>Staggered birthing cycles (every 12 months)</li>
-              <li>Age-based milk production (starts at 3 years)</li>
-              <li>Seasonal production cycles (5 months high, 3 months medium, 4 months rest)</li>
-              <li>Variable CPF costs based on buffalo age</li>
-            </ul>
-            <div className="bg-blue-100 rounded-lg p-4 mt-4">
-              <div className="font-semibold text-blue-800">💡 Note:</div>
-              <div className="text-blue-700 text-sm">
-                {cpfToggle === "withCPF" ? (
-                  <>
-                    The net cumulative revenue of {formatCurrency(breakEvenAnalysis.finalCumulativeRevenueWithCPF)} at break-even 
-                    represents <span className="font-bold">actual projected milk sales minus CPF costs</span>.
-                  </>
-                ) : (
-                  <>
-                    The gross cumulative revenue of {formatCurrency(breakEvenAnalysis.finalCumulativeRevenueWithoutCPF)} at break-even 
-                    represents <span className="font-bold">total milk sales before CPF deductions</span>.
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 };

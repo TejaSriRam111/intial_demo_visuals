@@ -307,27 +307,29 @@ export default function BuffaloFamilyTree() {
       
       {/* Tab Navigation */}
       {treeData && (
-        <div className="flex border-b border-gray-200 bg-white/90 backdrop-blur-sm">
-          <button
-            className={`flex-1 py-4 text-lg font-semibold transition-all duration-200 ${
-              activeTab === "familyTree" 
-                ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50/50" 
-                : "text-gray-600 hover:text-gray-800 hover:bg-gray-50/50"
-            }`}
+        <div className="my-5">
+          <div className="flex justify-center items-center gap-6 ">
+            <button
+            className={`font-bold rounded-xl p-3 text-sm transition-all duration-300 ${
+                activeTab === "familyTree" 
+                  ? 'bg-green-500 text-black shadow-lg transform scale-105' 
+                  : 'bg-black text-white hover:bg-gray-800'
+              }`}
             onClick={() => setActiveTab("familyTree")}
           >
             Family Tree
           </button>
           <button
-            className={`flex-1 py-4 text-lg font-semibold transition-all duration-200 ${
-              activeTab === "costEstimation" 
-                ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50/50" 
-                : "text-gray-600 hover:text-gray-800 hover:bg-gray-50/50"
-            }`}
+            className={`font-bold rounded-xl p-3 text-sm transition-all duration-300 ${
+                activeTab === "costEstimation" 
+                  ? 'bg-green-500 text-black shadow-lg transform scale-105' 
+                  : 'bg-black text-white hover:bg-gray-800'
+              }`}
             onClick={() => setActiveTab("costEstimation")}
           >
             Price Estimation
           </button>
+          </div>
         </div>
       )}
 

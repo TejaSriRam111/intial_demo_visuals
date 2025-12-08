@@ -680,28 +680,15 @@ const CostEstimationTable = ({
   const SummaryCards = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 xl:mb-5 xl:flex xl:justify-center xl:items-center">
       <div className="bg-cyan-50 rounded-3xl p-8 xl:p-3 xl:w-50 xl:h-40 shadow-2xl border border-gray-200 text-center transform hover:scale-105 transition-transform duration-300">
-        <div className="text-5xl font-bold text-gray-600 mb-4 xl:text-2xl xl:mb-1">{treeData.units}</div>
-        <div className="text-lg font-semibold text-gray-600 uppercase tracking-wide xl:text-lg">Starting Units</div>
-        <div className="text-sm text-gray-700 mt-2">
-          {herdStats.startingBuffaloes} buffaloes total
-          <br />
-          ({herdStats.motherBuffaloes} mothers + {herdStats.initialCalves} calves)
-        </div>
-        <div className="w-16 h-2 bg-blue-500 mx-auto mt-4 rounded-full xl:my-2"></div>
+        <div className="text-lg font-semibold text-gray-600 uppercase tracking-wide xl:text-lg">Starting Units {treeData.units}</div>
       </div>
 
       <div className="bg-cyan-50 rounded-3xl p-8 xl:p-3 xl:w-50 xl:h-40 shadow-2xl border border-green-100 text-center transform hover:scale-105 transition-transform duration-300">
-        <div className="text-5xl font-bold text-gray-600 mb-4 xl:text-2xl xl:mb-1">10</div>
-        <div className="text-lg font-semibold text-gray-600 uppercase tracking-wide xl:text-lg">Simulation Years</div>
-        <div className="text-sm text-gray-700 mt-2">2026 to 2035</div>
-        <div className="w-16 h-2 bg-green-500 mx-auto mt-4 rounded-full"></div>
+        <div className="text-lg font-semibold text-gray-600 uppercase tracking-wide xl:text-lg">Simulation Years 10</div>
       </div>
 
       <div className="bg-cyan-50 rounded-3xl p-8 xl:p-3 xl:w-50 xl:h-40 shadow-2xl border border-purple-100 text-center transform hover:scale-105 transition-transform duration-300">
-        <div className="text-5xl font-bold text-gray-600 mb-4 xl:text-2xl xl:mb-1">{treeData.totalBuffaloes}</div>
-        <div className="text-lg font-semibold text-gray-600 uppercase tracking-wide">Final Herd Size</div>
-        <div className="text-sm text-gray-700 mt-2">{herdStats.growthMultiple.toFixed(1)}x growth</div>
-        <div className="w-16 h-2 bg-purple-500 mx-auto mt-4 rounded-full"></div>
+        <div className="text-lg font-semibold text-gray-600 uppercase tracking-wide">Final Herd Size {treeData.totalBuffaloes}</div>  
       </div>
 
       <div className="bg-cyan-300 xl:p-3 xl:w-50 xl:h-40 rounded-3xl p-8 shadow-2xl text-gray-600 text-center transform hover:scale-105 transition-transform duration-300">
@@ -721,24 +708,7 @@ const CostEstimationTable = ({
       <div className="min-h-full bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-8xl mx-auto">
           <div className="h-5"></div>
-          {/* Header */}
-          <div className="text-center mb-16 xl:mb-7">
-            <div className="inline-block bg-gray-500 text-white px-12 py-8 rounded-2xl shadow-2xl mb-8 transform hover:scale-105 transition-transform duration-300 xl:px-5 xl:py-2 xl:my-5 xl:w-11/12">
-              <h1 className="text-5xl font-bold mb-4 xl:text-3xl xl:mb-2">Buffalo Herd Investment Analysis (2026-2035)</h1>
-              <h2 className="text-3xl font-semibold opacity-90 xl:text-lg">2 Mother Buffaloes (60 months) + 2 Calves per Unit | Complete Financial Projection</h2>
-            </div>
-            <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed xl:text-lg">
-              Comprehensive financial analysis for {treeData.units} starting unit{treeData.units > 1 ? 's' : ''} over 10 years (2026-2035)
-              <br />
-              <span className="text-lg text-gray-500 xl:text-[0.8rem]">
-                Each unit: 2 mother buffaloes (₹1.75L each) + 2 newborn calves + ONE CPF coverage (₹13,000) for both mothers
-              </span>
-            </p>
-          </div>
-          <div className="h-5 xl:h-0"></div>
-
-          <SummaryCards />
-          
+          {/* <SummaryCards /> */}
           <div className='w-full flex items-center justify-center text-white mb-8 flex-wrap gap-2'>
             <button 
               onClick={() => setActiveTab("Monthly Revenue Break")} 

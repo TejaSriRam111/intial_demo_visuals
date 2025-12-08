@@ -1,63 +1,140 @@
 import React from 'react';
-import { PieChart } from "lucide-react";
+import { BarChart3 } from "lucide-react";
 import { formatNumber } from '../CommonComponents';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
 
 const NonProducingBuffaloGraph = ({ yearlyData }) => {
-  if (!yearlyData) return null;
-  
+  if (!yearlyData || yearlyData.length === 0) return null;
+
+  // Transform data for bar chart
+  const chartData = yearlyData.map(data => ({
+    year: data.year,
+    'Producing Buffaloes': data.producingBuffaloes,
+    'Non-Producing Buffaloes': data.nonProducingBuffaloes,
+    totalBuffaloes: data.totalBuffaloes,
+    producingPercentage: (data.producingBuffaloes / data.totalBuffaloes) * 100,
+    nonProducingPercentage: (data.nonProducingBuffaloes / data.totalBuffaloes) * 100
+  }));
+
+  const colors = {
+    producing: '#10b981', // Green
+    nonProducing: '#f97316', // Orange
+    total: '#6366f1' // Indigo
+  };
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-4 rounded-xl shadow-lg border border-gray-200">
+          <p className="font-bold text-gray-800 mb-2">Year: {label}</p>
+          {payload.map((entry, index) => (
+            <div key={index} className="flex items-center gap-2 mb-1">
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: entry.color }}
+              />
+              <span className="text-gray-600">{entry.name}:</span>
+              <span className="font-bold text-gray-800">{formatNumber(entry.value)}</span>
+              {entry.dataKey.includes('Producing') && (
+                <span className="text-sm text-gray-500 ml-2">
+                  ({(entry.dataKey === 'Producing Buffaloes'
+                    ? chartData.find(d => d.year === label)?.producingPercentage
+                    : chartData.find(d => d.year === label)?.nonProducingPercentage
+                  ).toFixed(1)}%)
+                </span>
+              )}
+            </div>
+          ))}
+          <div className="mt-2 pt-2 border-t border-gray-200">
+            <p className="font-bold text-gray-800">
+              Total: {formatNumber(chartData.find(d => d.year === label)?.totalBuffaloes)} buffaloes
+            </p>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
-    <div className="bg-white rounded-3xl p-10 shadow-2xl border border-gray-100 w-full">
-      <h3 className="text-3xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-4">
-        <PieChart className="text-orange-500" size={32} />
+    <div className="bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 w-full">
+      <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-3">
+        <BarChart3 className="text-orange-500" size={28} />
         Non-Producing Buffalo Analysis
       </h3>
-      <div className="space-y-6">
-        {yearlyData.map((data, index) => {
-          const totalBuffaloes = data.totalBuffaloes;
-          const producingPercentage = (data.producingBuffaloes / totalBuffaloes) * 100;
-          const nonProducingPercentage = (data.nonProducingBuffaloes / totalBuffaloes) * 100;
-          
-          return (
-            <div key={data.year} className="p-6 bg-gray-50 rounded-3xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-[1.02]">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-xl font-bold text-gray-700">{data.year}</div>
-                <div className="text-lg text-gray-500">
-                  Total: {formatNumber(totalBuffaloes)} buffaloes
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-lg mb-2">
-                    <span className="text-green-600 font-semibold">Producing: {formatNumber(data.producingBuffaloes)}</span>
-                    <span className="text-green-600 font-bold">{producingPercentage.toFixed(1)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-6">
-                    <div 
-                      className="bg-gradient-to-r from-green-500 to-green-600 h-6 rounded-full transition-all duration-1000 ease-out"
-                      style={{ width: `${producingPercentage}%` }}
-                    ></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between text-lg mb-2">
-                    <span className="text-orange-600 font-semibold">Non-Producing: {formatNumber(data.nonProducingBuffaloes)}</span>
-                    <span className="text-orange-600 font-bold">{nonProducingPercentage.toFixed(1)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-6">
-                    <div 
-                      className="bg-gradient-to-r from-orange-500 to-orange-600 h-6 rounded-full transition-all duration-1000 ease-out"
-                      style={{ width: `${nonProducingPercentage}%` }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+
+      <div className="h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={chartData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            barGap={0}  // No gap between bars in same group
+            barCategoryGap="30%"  // Gap between year groups
+          >
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#e5e7eb"
+              vertical={false}
+            />
+            <XAxis
+              dataKey="year"
+              stroke="#4b5563"
+              tick={{ fill: '#6b7280', fontSize: 14 }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis
+              stroke="#4b5563"
+              tick={{ fill: '#6b7280', fontSize: 14 }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(value) => formatNumber(value)}
+            />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ fill: 'rgba(243, 244, 246, 0.5)' }}
+            />
+            <Legend
+              wrapperStyle={{
+                paddingTop: '20px',
+                fontSize: '14px'
+              }}
+            />
+            <Bar
+              dataKey="Producing Buffaloes"
+              name="Producing Buffaloes"
+              fill={colors.producing}
+              radius={[4, 4, 0, 0]}
+              maxBarSize={60}
+            >
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-prod-${index}`} fill={colors.producing} />
+              ))}
+            </Bar>
+            <Bar
+              dataKey="Non-Producing Buffaloes"
+              name="Non-Producing Buffaloes"
+              fill={colors.nonProducing}
+              radius={[4, 4, 0, 0]}
+              maxBarSize={60}
+            >
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-nonprod-${index}`} fill={colors.nonProducing} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </div>
-      <div className="h-10"></div>
     </div>
   );
 };
