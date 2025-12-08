@@ -7,38 +7,87 @@ const RevenueBreakEven = ({
   breakEvenAnalysis,
   cpfToggle,
   setCpfToggle,
-  formatCurrency
+  formatCurrency,
+  revenueBreakEvenYearWithoutCPF,
+  revenueBreakEvenMonthWithoutCPF,
+  revenueBreakEvenYearWithCPF,
+  revenueBreakEvenMonthWithCPF,
+  revenueExactBreakEvenDateWithoutCPF,
+  revenueExactBreakEvenDateWithCPF
 }) => {
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 
+  // Calculate revenue-only break-even summary
+  const calculateRevenueBreakEvenSummary = () => {
+    const summary = {
+      withoutCPF: {
+        year: revenueBreakEvenYearWithoutCPF,
+        month: revenueBreakEvenMonthWithoutCPF,
+        date: revenueExactBreakEvenDateWithoutCPF,
+        monthsToBreakEven: revenueBreakEvenYearWithoutCPF && revenueBreakEvenMonthWithoutCPF 
+          ? (revenueBreakEvenYearWithoutCPF - treeData.startYear) * 12 + (revenueBreakEvenMonthWithoutCPF + 1)
+          : null,
+        totalInvestment: initialInvestment.totalInvestment
+      },
+      withCPF: {
+        year: revenueBreakEvenYearWithCPF,
+        month: revenueBreakEvenMonthWithCPF,
+        date: revenueExactBreakEvenDateWithCPF,
+        monthsToBreakEven: revenueBreakEvenYearWithCPF && revenueBreakEvenMonthWithCPF 
+          ? (revenueBreakEvenYearWithCPF - treeData.startYear) * 12 + (revenueBreakEvenMonthWithCPF + 1)
+          : null,
+        totalInvestment: initialInvestment.totalInvestment
+      }
+    };
+
+    return summary;
+  };
+
+  const revenueBreakEvenSummary = calculateRevenueBreakEvenSummary();
+
+  // Function to calculate investment recovery status based on cumulative revenue
+  const calculateInvestmentRecoveryStatus = (cumulativeRevenue, totalInvestment, isRevenueBreakEven) => {
+    const recoveryPercentage = (cumulativeRevenue / totalInvestment) * 100;
+    
+    let status = "";
+    if (isRevenueBreakEven || recoveryPercentage >= 100) {
+      status = "Break-Even Achieved ✓";
+    } else if (recoveryPercentage >= 75) {
+      status = "75% Investment Recovered";
+    } else if (recoveryPercentage >= 50) {
+      status = "50% Investment Recovered";
+    } else if (recoveryPercentage >= 25) {
+      status = "25% Investment Recovered";
+    } else {
+      status = "In Progress";
+    }
+    
+    return {
+      recoveryPercentage,
+      status
+    };
+  };
+
   return (
-    <div className=" p-10 rounded-2xl border border-purple-200 mb-16 xl:mx-20">
+    <div className=" p-5 rounded-2xl border border-purple-200 mb-16 xl:mx-20">
 
-
-     {/* CPF Toggle - Side-by-side version */}
-<div className="flex justify-center mb-8">
-  <div className="bg-white rounded-2xl p-4 border border-purple-300 flex items-center gap-4">
-    <div className="text-lg font-semibold text-purple-700">Select CPF Mode:</div>
-    <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
-      <button
-        onClick={() => setCpfToggle("withCPF")}
-        className={`px-6 py-2 rounded-lg font-bold transition-all ${cpfToggle === "withCPF" ? 'bg-green-500 text-white shadow-md' : 'bg-transparent text-gray-700 hover:bg-gray-200'}`}
-      >
-        With CPF
-      </button>
-      <button
-        onClick={() => setCpfToggle("withoutCPF")}
-        className={`px-6 py-2 rounded-lg font-bold transition-all ${cpfToggle === "withoutCPF" ? 'bg-blue-500 text-white shadow-md' : 'bg-transparent text-gray-700 hover:bg-gray-200'}`}
-      >
-        Without CPF
-      </button>
-    </div>
-  </div>
-</div>
+      {/* Revenue Break-Even Analysis Heading */}
+      <div className="flex justify-center mb-8">
+        <div className=" p-3  w-full max-w-2xl text-center">
+          <h2 className="text-4xl font-bold text-black mb-2">
+            Revenue Break-Even Analysis
+          </h2>
+          <div className="inline-flex items-center justify-center px-4 py-2 bg-emerald-50 rounded-full">
+          <span className="text-emerald-700 font-semibold">
+            With CPF
+          </span>
+        </div>
+        </div>
+      </div>
 
       {/* Initial Investment & Break-Even Analysis - Professional Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-4 gap-4 mb-8">
         {/* Mother Buffaloes Cost */}
         <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-5 border border-blue-100 shadow-sm text-center">
           <div className="text-2xl font-bold text-blue-700 mb-2">
@@ -86,34 +135,12 @@ const RevenueBreakEven = ({
           </div>
         </div>
 
-        {/* Without CPF Break-Even */}
-        {breakEvenAnalysis.breakEvenYearWithoutCPF && breakEvenAnalysis.exactBreakEvenDateWithoutCPF && (
-          <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl p-5 text-white text-center shadow-sm">
-            <div className="text-md font-bold mb-2">Break-Even WITHOUT CPF</div>
-            <div className="text-xl font-semibold mb-1">
-              {breakEvenAnalysis.exactBreakEvenDateWithoutCPF.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}
-            </div>
-            <div className="text-sm opacity-90 mb-2">
-              📈 Revenue: {formatCurrency(breakEvenAnalysis.finalCumulativeRevenueWithoutCPF)}
-            </div>
-            <div className="text-xs opacity-80">
-              {Math.floor((breakEvenAnalysis.breakEvenYearWithoutCPF - treeData.startYear) * 12 + breakEvenAnalysis.breakEvenMonthWithoutCPF)} months
-              <br />
-              ({Math.floor((breakEvenAnalysis.breakEvenYearWithoutCPF - treeData.startYear) + breakEvenAnalysis.breakEvenMonthWithoutCPF / 12)} years)
-            </div>
-          </div>
-        )}
-
-        {/* With CPF Break-Even */}
-        {breakEvenAnalysis.breakEvenYearWithCPF && breakEvenAnalysis.exactBreakEvenDateWithCPF && (
+        {/* Break-Even Card - Always show With CPF */}
+        {revenueBreakEvenSummary.withCPF.date && (
           <div className="bg-gradient-to-br from-teal-600 to-emerald-700 rounded-xl p-5 text-white text-center shadow-sm">
             <div className="text-md font-bold mb-2">Break-Even WITH CPF</div>
             <div className="text-xl font-semibold mb-1">
-              {breakEvenAnalysis.exactBreakEvenDateWithCPF.toLocaleDateString('en-US', {
+              {revenueBreakEvenSummary.withCPF.date.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric'
@@ -123,9 +150,9 @@ const RevenueBreakEven = ({
               📈 Net Revenue: {formatCurrency(breakEvenAnalysis.finalCumulativeRevenueWithCPF)}
             </div>
             <div className="text-xs opacity-80">
-              {Math.floor((breakEvenAnalysis.breakEvenYearWithCPF - treeData.startYear) * 12 + breakEvenAnalysis.breakEvenMonthWithCPF)} months
+              {revenueBreakEvenSummary.withCPF.monthsToBreakEven} months
               <br />
-              ({Math.floor((breakEvenAnalysis.breakEvenYearWithCPF - treeData.startYear) + breakEvenAnalysis.breakEvenMonthWithCPF / 12)} years)
+              ({(revenueBreakEvenSummary.withCPF.monthsToBreakEven / 12).toFixed(1)} years)
             </div>
           </div>
         )}
@@ -134,7 +161,7 @@ const RevenueBreakEven = ({
       {/* Break-Even Timeline */}
       <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-lg">
         <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Break-Even Timeline {cpfToggle === "withCPF" ? "(With CPF)" : "(Without CPF)"}
+          Break-Even Timeline (With CPF)
         </h3>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -142,34 +169,43 @@ const RevenueBreakEven = ({
               <tr className="bg-gradient-to-r from-gray-50 to-blue-50">
                 <th className="px-6 py-4 text-left font-bold text-gray-700 border-b">Year</th>
                 <th className="px-6 py-4 text-left font-bold text-gray-700 border-b">
-                  {cpfToggle === "withCPF" ? "Annual Revenue (Net)" : "Annual Revenue (Gross)"}
+                  Annual Revenue (Net)
                 </th>
                 <th className="px-6 py-4 text-left font-bold text-gray-700 border-b">
-                  {cpfToggle === "withCPF" ? "Cumulative (Net)" : "Cumulative (Gross)"}
+                  Cumulative (Net)
                 </th>
                 <th className="px-6 py-4 text-left font-bold text-gray-700 border-b">Investment Recovery</th>
               </tr>
             </thead>
             <tbody>
               {breakEvenAnalysis.breakEvenData.map((data, index) => {
-                const annualRevenue = cpfToggle === "withCPF" ? data.annualRevenueWithCPF : data.annualRevenueWithoutCPF;
-                const cumulativeRevenue = cpfToggle === "withCPF" ? data.cumulativeRevenueWithCPF : data.cumulativeRevenueWithoutCPF;
-                const recoveryPercentage = cpfToggle === "withCPF" ? data.recoveryPercentageWithCPF : data.recoveryPercentageWithoutCPF;
-                const status = cpfToggle === "withCPF" ? data.statusWithCPF : data.statusWithoutCPF;
+                const annualRevenue = data.annualRevenueWithCPF;
+                const cumulativeRevenue = data.cumulativeRevenueWithCPF;
+                const isRevenueBreakEven = data.isRevenueBreakEvenWithCPF;
+                
+                // Calculate investment recovery based on cumulative revenue vs total investment
+                const { recoveryPercentage, status } = calculateInvestmentRecoveryStatus(
+                  cumulativeRevenue, 
+                  initialInvestment.totalInvestment,
+                  isRevenueBreakEven
+                );
 
                 return (
-                  <tr key={data.year} className="hover:bg-blue-50 transition-colors">
+                  <tr key={data.year} className={`hover:bg-blue-50 transition-colors ${isRevenueBreakEven ? 'bg-green-50' : ''}`}>
                     <td className="px-6 py-4 border-b">
                       <div className="font-semibold text-gray-900">{data.year}</div>
                       <div className="text-sm text-gray-600">Year {index + 1}</div>
+                      {isRevenueBreakEven && (
+                        <div className="text-xs text-green-600 font-medium mt-1">
+                          ⭐ Revenue Break-Even Achieved
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4 border-b font-semibold text-green-600">
                       {formatCurrency(annualRevenue)}
-                      {cpfToggle === "withCPF" && (
-                        <div className="text-xs text-gray-500">
-                          CPF: -{formatCurrency(data.cpfCost)}
-                        </div>
-                      )}
+                      <div className="text-xs text-gray-500">
+                        CPF: -{formatCurrency(data.cpfCost)}
+                      </div>
                     </td>
                     <td className="px-6 py-4 border-b font-semibold text-blue-600">
                       {formatCurrency(cumulativeRevenue)}
@@ -183,14 +219,16 @@ const RevenueBreakEven = ({
                           ></div>
                         </div>
                         <div className="text-sm font-semibold text-gray-600 min-w-[60px]">
+                          {/* Show actual percentage even if it's above 100% */}
                           {recoveryPercentage.toFixed(1)}%
                         </div>
                       </div>
                       <span className={`px-3 py-1 rounded-full text-sm font-semibold mt-2 inline-block
                         ${status.includes('Break-Even') ? 'bg-green-100 text-green-800' :
                           status.includes('75%') ? 'bg-yellow-100 text-yellow-800' :
-                            status.includes('50%') ? 'bg-blue-100 text-blue-800' :
-                              'bg-gray-100 text-gray-600'}`}>
+                          status.includes('50%') ? 'bg-blue-100 text-blue-800' :
+                          status.includes('25%') ? 'bg-purple-100 text-purple-800' :
+                          'bg-gray-100 text-gray-600'}`}>
                         {status}
                       </span>
                     </td>
@@ -201,8 +239,6 @@ const RevenueBreakEven = ({
           </table>
         </div>
       </div>
-
-
     </div>
   );
 };
